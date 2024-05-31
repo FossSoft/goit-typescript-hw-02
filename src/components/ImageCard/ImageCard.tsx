@@ -1,24 +1,14 @@
-import React from 'react';
-import css from "./ImageCard.module.css";
-import { Photo } from '../../photos-api';
+import style from "./ImageCard.module.css";
+import { Props } from "./ImageCard.types";
 
-interface ImageCardProps {
-  data: Photo;
-  onImageClick: (imageUrl: string) => void;
-}
-
-const ImageCard: React.FC<ImageCardProps> = ({ data, onImageClick }) => {
-  const handleClick = () => {
-    onImageClick(data.urls.regular);
-  };
-
+const ImageCard = ({ item, openModal }: Props) => {
   return (
     <div>
       <img
-        src={data.urls.small}
-        alt="photo"
-        className={css.photo}
-        onClick={handleClick}
+        className={style.galleryItem}
+        src={item.urls.small}
+        alt={item.alt_description}
+        onClick={() => openModal(item)}
       />
     </div>
   );

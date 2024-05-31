@@ -1,48 +1,25 @@
-import { useEffect, FC } from 'react';
-import Modal from 'react-modal';
-import css from './ImageModal.module.css';
-
-Modal.setAppElement('#root');
-
-// Define the props for the ImageModal component
-interface ImageModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  imageUrl: string;
-}
-
-const ImageModal: FC<ImageModalProps> = ({ isOpen, onClose, imageUrl }) => {
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
-
-  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (event.target === event.currentTarget) {
-      onClose();
-    }
-  };
-
+import Modal from "react-modal";
+import style from "./ImageModal.module.css";
+import { Props } from "./ImageModal.types";
+Modal.setAppElement("#root");
+const ImageModal = ({ isOpen, selectedImage, setIsOpen }: Props) => {
+  if (!selectedImage) {
+    return null;
+  }
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={onClose}
-      overlayClassName={css.Overlay}
-      className={css.Modal}
-      shouldCloseOnOverlayClick={true} // Ensures that onRequestClose is called on overlay click
+      onRequestClose={() => setIsOpen(false)}
+      className={style.modal}
+      overlayClassName={style.overlay}
     >
-      <div onClick={handleOverlayClick}>
-        <img src={imageUrl} alt="Modal" className={css.photo} />
-      </div>
+      {selectedImage && (
+        <img
+          className={style.modalImage}
+          src={selectedImage.urls.regular}
+          alt={selectedImage.alt_description}
+        />
+      )}
     </Modal>
   );
 };
