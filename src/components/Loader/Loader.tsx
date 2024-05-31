@@ -1,15 +1,21 @@
-import { Vortex } from 'react-loader-spinner';
+import React from 'react';
+import { ThreeDots } from 'react-loader-spinner';
 
-export const Loader = () => {
+interface LoaderProps {}
+
+const Loader: React.FC<LoaderProps> = () => {
   return (
-    <Vortex
+    <ThreeDots
       visible={true}
-      height="80"
-      width="80"
-      ariaLabel="vortex-loading"
+      height="40"
+      width="40"
+      color="blue"
+      radius="5"
+      ariaLabel="three-dots-loading"
       wrapperStyle={{}}
-      wrapperClass="vortex-wrapper"
-      colors={['red', 'green', 'blue', 'yellow', 'orange', 'purple']}
+      wrapperClass=""
     />
   );
 };
+
+export default Loader;

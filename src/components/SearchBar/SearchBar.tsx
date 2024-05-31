@@ -1,52 +1,52 @@
-import React from "react";
-import { useState } from "react";
+import React from 'react';
+import { Formik, Form, Field, FormikProps, FormikValues , FormikHelpers  } from 'formik';
+import toast, { Toaster } from 'react-hot-toast';
+import css from "./SearchBar.module.css";
+import { IoMdSearch } from "react-icons/io";
 
-import { SearchbarProps } from "../App.types";
-import css from "./Searchbar.module.css";
+interface SearchBarProps {
+  onSearch: (query: string) => void;
+}
 
-// import sprite from "../../assets/search.svg";
+interface FormValues {
+  query: string;
+}
 
-const Searchbar: React.FC<SearchbarProps> = ({ onSubmit }) => {
-  const [searchInputText, setSearchInputText] = useState<string>("");
-
-  const handleSearchbarSubmit = (evt: React.FormEvent): void => {
-    evt.preventDefault();
-    onSubmit(searchInputText);
-  };
-
-  const handleSearchbarInputChange = (
-    evt: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    evt.preventDefault();
-    const {
-      target: { value },
-    } = evt;
-    setSearchInputText(value);
-  };
-
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   return (
-    <>
-      <header className={css.searchBar}>
-        <form className={css.searchForm} onSubmit={handleSearchbarSubmit}>
-          <button type="submit" className={css.searchFormButton}>
-            🔍
-            {/* <svg className={css.searchBtnIcon} width="28" height="28">
-              <use href={`${sprite}#search`}></use>
-            </svg> */}
+    <header className={css.header}>
+      <Formik
+        initialValues={{ query: '' }}
+        onSubmit={(values, actions: FormikHelpers<FormValues>) =>  {
+          if (values.query.trim() === '') {
+            toast.error('Please enter a search term');
+            return;
+          }
+          onSearch(values.query);
+          actions.resetForm();
+        }}
+      >
+        <Form className={css.form}>
+          <Field name="query">
+            {({ field }: { field: FormikValues }) => (
+              <input
+                {...field}
+                type="text"
+                autoComplete="off"
+                autoFocus
+                placeholder="Search images and photos"
+                className={css.input}
+              />
+            )}
+          </Field>
+          <button type="submit" className={css.button}>
+            <IoMdSearch />
           </button>
-          <input
-            className={css.searchFormInput}
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            onChange={handleSearchbarInputChange}
-            value={searchInputText}
-          />
-        </form>
-      </header>
-    </>
+          <Toaster position="top-right" reverseOrder={false} />
+        </Form>
+      </Formik>
+    </header>
   );
 };
 
-export default Searchbar;
+export default SearchBar;
