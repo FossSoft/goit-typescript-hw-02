@@ -1,35 +1,25 @@
 .header {
-  background-color: rgb(176, 99, 221);
-  width: 100%;
-  padding: 15px 0;
-  margin-bottom: 30px;
   display: flex;
-  justify-content: center;
-}
-
-.input {
-  padding: 10px;
-
-  border-radius: 8px;
-  border: none;
-}
-
-.btn {
-  padding: 10px;
-  display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: #fff;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background-color: #b4b4b4;
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: rgb(86, 86, 121);
 }
 
 .form {
-  display: flex;
-  gap: 10px;
+    position: relative;
 }
+.input {
+  outline: none;
+padding-left: 25px;
+}
+.button{
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background-color: transparent;
+}
+

@@ -1,39 +1,50 @@
-import style from "./SearchBar.module.css";
-import toast from "react-hot-toast";
-import { Props } from "./SearchBar.types";
-import { FormEvent } from "react";
+import React from 'react';
+import { Formik, Form, Field, FormikProps, FormikValues , FormikHelpers  } from 'formik';
+import toast, { Toaster } from 'react-hot-toast';
+import css from "./SearchBar.module.css";
+import { IoMdSearch } from "react-icons/io";
 
-const SearchBar = ({ onSubmit }: Props) => {
-  const handleSubmit = (e: React.FormEvent) => {
-    const form = e.target as HTMLFormElement;
-    e.preventDefault();
-    const input = form.elements.namedItem("searchbar") as HTMLInputElement;
-    const query = input.value.trim().toLowerCase();
-    if (query === "") {
-      toast.error("Field cannot be empty!", {
-        duration: 2000,
-        position: "top-right",
-      });
-      return;
-    }
-    onSubmit(query);
-    form.reset();
-  };
+interface SearchBarProps {
+  onSearch: (query: string) => void;
+}
+
+interface FormValues {
+  query: string;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   return (
-    <header className={style.header}>
-      <form className={style.form} onSubmit={handleSubmit}>
-        <input
-          className={style.input}
-          type="text"
-          name="searchbar"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search images and photos"
-        />
-        <button className={style.btn} type="submit">
-          Search
-        </button>
-      </form>
+    <header className={css.header}>
+      <Formik
+        initialValues={{ query: '' }}
+        onSubmit={(values, actions: FormikHelpers<FormValues>) =>  {
+          if (values.query.trim() === '') {
+            toast.error('Please enter a search term');
+            return;
+          }
+          onSearch(values.query);
+          actions.resetForm();
+        }}
+      >
+        <Form className={css.form}>
+          <Field name="query">
+            {({ field }: { field: FormikValues }) => (
+              <input
+                {...field}
+                type="text"
+                autoComplete="off"
+                autoFocus
+                placeholder="Search images and photos"
+                className={css.input}
+              />
+            )}
+          </Field>
+          <button type="submit" className={css.button}>
+            <IoMdSearch />
+          </button>
+          <Toaster position="top-right" reverseOrder={false} />
+        </Form>
+      </Formik>
     </header>
   );
 };

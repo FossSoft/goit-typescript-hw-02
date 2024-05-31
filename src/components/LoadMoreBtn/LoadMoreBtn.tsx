@@ -1,13 +1,15 @@
-import style from "./LoadMoreBtn.module.css";
-import { Props } from "./LoadMoreBtn.types";
+import React from 'react';
+import css from "./LoadMoreBtn.module.css";
 
-const LoadMoreBtn = ({ handleLoadMore }: Props) => {
+interface LoadMoreBtnProps {
+  onClick: () => void;
+}
+
+const LoadMoreBtn: React.FC<LoadMoreBtnProps> = ({ onClick }) => {
   return (
-    <>
-      <button className={style.loadMoreBtn} onClick={handleLoadMore}>
-        Load More
-      </button>
-    </>
+    <div className={css.button}>
+      <button onClick={onClick}>Load more</button>
+    </div>
   );
 };
 

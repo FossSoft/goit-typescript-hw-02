@@ -1,23 +1,23 @@
-import style from "./ImageGallery.module.css";
-import ImageCard from "../ImageCard/ImageCard";
-import { GalleryItem } from "../ImageCard/ImageCard.types";
-import { Props } from "./ImageGallery.types";
+import React from 'react';
+import ImageCard from '../ImageCard/ImageCard';
+import { nanoid } from 'nanoid';
+import css from "./ImageGallery.module.css";
+import { Photo } from '../../photos-api';
 
-const ImageGallery = ({ items, openModal }: Props) => {
+interface ImageGalleryProps {
+  items: Photo[];
+  onImageClick: (imageUrl: string) => void;
+}
+
+const ImageGallery: React.FC<ImageGalleryProps> = ({ items, onImageClick }) => {
   return (
-    <>
-      {items.length > 0 && (
-        <div>
-          <ul className={style.gallery}>
-            {items.map((item: GalleryItem) => (
-              <li key={item.id}>
-                <ImageCard item={item} openModal={openModal} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </>
+    <ul className={css.list}>
+      {items.map((item) => (
+        <li key={nanoid()} className={css.item}>
+          <ImageCard data={item} onImageClick={onImageClick} />
+        </li>
+      ))}
+    </ul>
   );
 };
 
