@@ -1,23 +1,27 @@
-import React from 'react';
-import ImageCard from '../ImageCard/ImageCard';
-import { nanoid } from 'nanoid';
-import css from "./ImageGallery.module.css";
-import { Photo } from '../../photos-api';
+import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
+import { ImageGalleryProps } from '../App.types';
+import css from './ImageGallery.module.css';
 
-interface ImageGalleryProps {
-  items: Photo[];
-  onImageClick: (imageUrl: string) => void;
-}
-
-const ImageGallery: React.FC<ImageGalleryProps> = ({ items, onImageClick }) => {
+const ImageGallery: React.FC<ImageGalleryProps> = ({
+  gallery,
+  onOpenModal,
+}) => {
   return (
-    <ul className={css.list}>
-      {items.map((item) => (
-        <li key={nanoid()} className={css.item}>
-          <ImageCard data={item} onImageClick={onImageClick} />
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className={css.imageGallery} id="forScroll">
+        {gallery.map(({ id, webformatURL, largeImageURL, tags }) => {
+          return (
+            <ImageGalleryItem
+              key={id}
+              webformatURL={webformatURL}
+              largeImageURL={largeImageURL}
+              tags={tags}
+              onOpenModal={onOpenModal}
+            />
+          );
+        })}
+      </ul>
+    </>
   );
 };
 
